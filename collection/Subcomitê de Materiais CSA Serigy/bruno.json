@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Subcomitê de Materiais CSA Serigy",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

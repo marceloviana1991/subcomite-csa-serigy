@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Pedidos - CSM</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="url.js" defer></script>
+    <script src="pedidos.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Subcomitê de Materiais</h1>
+        <p>Um dia de cada vez</p>
+    </header>
+
+    <nav class="navbar">
+        <div class="navbar-container container">
+            <button id="hamburger-btn" class="hamburger">&#9776;</button>
+            <ul id="nav-links" class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Fazer Pedido</a>
+                </li>
+                <li class="nav-item">
+                    <a href="estoque.html" class="nav-link">Adicionar em Estoque</a>
+                </li>
+                <li class="nav-item">
+                    <a href="pedidos.html" class="nav-link active">Visualizar Pedidos</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="filtros-relatorio">
+            <div class="form-group">
+                <label for="filtroMes">Selecione o Mês:</label>
+                <select id="filtroMes"></select>
+            </div>
+            <div class="form-group">
+                <label for="filtroAno">Selecione o Ano:</label>
+                <input type="number" id="filtroAno">
+            </div>
+        </div>
+
+        <div id="area-resultados" class="area-resultados">
+            </div>
+    </main>
+
+    <footer>
+        <p>"Só por hoje, meus pensamentos estarão concentrados na minha recuperação."</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const navLinks = document.getElementById('nav-links');
+            if (hamburgerBtn && navLinks) {
+                hamburgerBtn.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

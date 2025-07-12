@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSM - Pedido de Materiais</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="url.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Subcomitê de Materiais</h1>
+        <p>Um dia de cada vez</p>
+    </header>
+
+
+    <nav class="navbar">
+        <div class="navbar-container container">
+            <button id="hamburger-btn" class="hamburger">&#9776;</button>
+            <ul id="nav-links" class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">Fazer Pedido</a>
+                </li>
+                <li class="nav-item">
+                    <a href="estoque.html" class="nav-link">Adicionar em Estoque</a>
+                </li>
+                <li class="nav-item">
+                    <a href="pedidos.html" class="nav-link">Visualizar Pedidos</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="app-wrapper">
+            <div class="controles">
+                <h2>Faça seu Pedido</h2>
+                <div class="form-group">
+                    <label for="seletorCategorias">1. Escolha a Categoria:</label>
+                    <select id="seletorCategorias">
+                        <option value="" disabled selected>Selecionar...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="seletorProdutos">2. Escolha o Produto:</label>
+                    <select id="seletorProdutos" disabled>
+                        <option value="" disabled selected>Aguardando categoria...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputQuantidade">3. Defina a Quantidade:</label>
+                    <input 
+                        type="number" 
+                        id="inputQuantidade" 
+                        min="1" 
+                        value="1" 
+                        disabled>
+                </div>
+                
+                <div class="form-group">
+                    <button id="btnAdicionar" class="btn-adicionar" disabled>Adicionar ao Pedido</button>
+                </div>
+            </div>
+
+            <div class="detalhes-wrapper">
+                <div id="painelDetalhes" style="display: none;">
+                    <img id="detalheImagem" src="" alt="Imagem do Produto">
+                    <h3>Resumo do Item</h3>
+                    <p><strong>Produto:</strong> <span id="detalheNome"></span></p>
+                    <p><strong>Valor Unitário:</strong> <span id="detalhePreco"></span></p>
+                    <p><strong>Em estoque:</strong> <span id="detalheEstoque"></span></p>
+                    <div class="total-final">
+                        <strong>Valor Total do Item:</strong> 
+                        <span id="detalheTotal"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pedido-wrapper">
+            <h2>Itens do Pedido</h2>
+            <div class="tabela-container">
+                <table id="tabelaPedido">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Qtd.</th>
+                            <th>Subtotal</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpoTabelaPedido">
+                        </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">Total do Pedido:</td>
+                            <td id="totalPedido">R$ 0,00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="finalizar-wrapper">
+            <button id="btnFinalizarPedido" class="btn-finalizar" disabled>Finalizar Pedido</button>
+            <div id="statusPedido" class="status-pedido"></div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>"Só por hoje, meus pensamentos estarão concentrados na minha recuperação."</p>
+    </footer>
+
+</body>
+</html>

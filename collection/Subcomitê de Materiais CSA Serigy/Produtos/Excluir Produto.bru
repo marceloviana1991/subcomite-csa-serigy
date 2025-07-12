@@ -1,0 +1,11 @@
+meta {
+  name: Excluir Produto
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/produtos/{{produtoId}}
+  body: none
+  auth: none
+}

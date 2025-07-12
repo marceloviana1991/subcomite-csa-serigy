@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ação em Estoque - CSM</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="url.js" defer></script>
+    <script src="estoque.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Subcomitê de Materiais</h1>
+        <p>Um dia de cada vez</p>
+    </header>
+
+    <nav class="navbar">
+        <div class="navbar-container container">
+            <button id="hamburger-btn" class="hamburger">&#9776;</button>
+            <ul id="nav-links" class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Fazer Pedido</a>
+                </li>
+                <li class="nav-item">
+                    <a href="estoque.html" class="nav-link active">Adicionar em Estoque</a>
+                </li>
+                <li class="nav-item">
+                    <a href="pedidos.html" class="nav-link">Visualizar Pedidos</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="app-wrapper">
+            <div class="controles">
+                <h2>Adicionar Produtos ao Estoque</h2>
+                <div class="form-group">
+                    <label for="seletorCategorias">1. Escolha a Categoria:</label>
+                    <select id="seletorCategorias">
+                        <option value="" disabled selected>Selecionar...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="seletorProdutos">2. Escolha o Produto:</label>
+                    <select id="seletorProdutos" disabled>
+                        <option value="" disabled selected>Aguardando categoria...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputValor">3. Informe a Quantidade:</label>
+                    <input 
+                        type="number" 
+                        id="inputValor" 
+                        min="1" 
+                        value="1" 
+                        disabled>
+                </div>
+                
+                <div class="form-group">
+                    <button id="btnAcao" class="btn-finalizar" disabled>Adicionar em estoque</button>
+                </div>
+            </div>
+
+            <div class="detalhes-wrapper">
+                <div id="painelDetalhes" style="display: none;">
+                    <img id="detalheImagem" src="" alt="Imagem do Produto">
+                    <h3>Detalhes do Item</h3>
+                    <p><strong>Produto:</strong> <span id="detalheNome"></span></p>
+                    <p><strong>Valor Unitário:</strong> <span id="detalhePreco"></span></p>
+                    <p><strong>Estoque Atual:</strong> <span id="detalheEstoque"></span></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>"Só por hoje, meus pensamentos estarão concentrados na minha recuperação."</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const navLinks = document.getElementById('nav-links');
+            if (hamburgerBtn && navLinks) {
+                hamburgerBtn.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
