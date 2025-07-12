@@ -1,3 +1,20 @@
+// =================================================================
+// INÍCIO DA LÓGICA DE SEGURANÇA
+// =================================================================
+
+const URL_BACKEND = 'http://localhost:8081'; // URL do seu backend
+const token = localStorage.getItem('jwtToken'); // 1. Recupera o token
+
+// 2. Verifica se o token existe, se não, redireciona para o login
+if (!token) {
+    alert('Acesso negado. Por favor, faça o login.');
+    window.location.href = 'login.html';
+}
+
+// =================================================================
+// FIM DA LÓGICA DE SEGURANÇA
+// =================================================================
+
 /**
  * Função principal para a página de relatório de pedidos.
  */
@@ -7,14 +24,16 @@ async function iniciarPaginaRelatorio() {
     const filtroAnoEl = document.getElementById('filtroAno');
     const areaResultados = document.getElementById('area-resultados');
 
-    // Assumindo que URL_BACKEND está definida em algum lugar do seu script, por exemplo:
-    // const URL_BACKEND = 'http://localhost:8080';
-
     // --- 2. Funções de Interação com a API ---
     async function buscarPedidos(mes, ano) {
       try {
         const url = `${URL_BACKEND}/pedidos/filtrar?mes=${mes}&ano=${ano}`;
-        const response = await fetch(url);
+        // Adiciona o cabeçalho de autorização na requisição
+        const response = await fetch(url, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if (!response.ok) {
           throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
         }
@@ -29,7 +48,13 @@ async function iniciarPaginaRelatorio() {
     async function confirmarPedido(pedidoId) {
         if (!confirm('Deseja realmente confirmar este pedido?')) return;
         try {
-            const response = await fetch(`${URL_BACKEND}/pedidos/confirmar/${pedidoId}`, { method: 'PUT' });
+            // Adiciona o cabeçalho de autorização na requisição
+            const response = await fetch(`${URL_BACKEND}/pedidos/confirmar/${pedidoId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             if (!response.ok) {
                 const erro = await response.text();
                 throw new Error(`Falha ao confirmar pedido: ${erro}`);
@@ -45,7 +70,13 @@ async function iniciarPaginaRelatorio() {
     async function cancelarPedido(pedidoId) {
         if (!confirm('TEM CERTEZA que deseja cancelar este pedido? Esta ação não pode ser desfeita.')) return;
         try {
-            const response = await fetch(`${URL_BACKEND}/pedidos/cancelar/${pedidoId}`, { method: 'DELETE' });
+            // Adiciona o cabeçalho de autorização na requisição
+            const response = await fetch(`${URL_BACKEND}/pedidos/cancelar/${pedidoId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             if (!response.ok) {
                 const erro = await response.text();
                 throw new Error(`Falha ao cancelar pedido: ${erro}`);
@@ -109,11 +140,16 @@ async function iniciarPaginaRelatorio() {
 
                 const dataFormatada = new Date(pedido.dataPedido).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-                // ===== ALTERAÇÃO APLICADA AQUI =====
                 const pedidoHtml = `
                     <div class="${cardClass}" data-pedido-id="${pedido.id}">
                         <div class="pedido-header">
                            <h3>Pedido #${pedido.id} - ${dataFormatada}</h3>
+
+                           <div class="pedido-info-cliente">
+                                <p><strong>Cliente:</strong> ${pedido.nome}</p>
+                                <p><strong>Telefone:</strong> ${pedido.telefone}</p>
+                           </div>
+
                            ${statusHtml}
                         </div>
                         <div class="tabela-container">

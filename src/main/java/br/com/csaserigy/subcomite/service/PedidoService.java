@@ -46,6 +46,8 @@ public class PedidoService {
         }
 
         pedido.setValorTotal(valorTotal);
+        pedido.setNome(dados.nome());
+        pedido.setTelefone(dados.telefone());
         return pedidoRepository.save(pedido);
     }
 

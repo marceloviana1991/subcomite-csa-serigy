@@ -22,6 +22,9 @@ public class Pedido {
     @Column(name = "data_pedido")
     private LocalDateTime dataPedido;
 
+    private String nome;
+    private String telefone;
+
     @Column(name = "valor_total")
     private Float valorTotal;
 

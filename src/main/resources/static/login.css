@@ -1,0 +1,116 @@
+/* =============================================== */
+/* ESTILOS DA PÁGINA DE LOGIN                      */
+/* =============================================== */
+
+/* ---- Estilos Globais para a Página ---- */
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #f4f4f9; /* Mesmo fundo da página principal */
+    color: #333;
+    line-height: 1.6;
+    /* Centraliza o conteúdo vertical e horizontalmente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+h2 {
+    font-family: 'Merriweather', serif;
+    color: #003366;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* ---- Contêiner do Formulário de Login ---- */
+.login-container {
+    width: 100%;
+    max-width: 450px;
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #003366;
+}
+
+/* ---- Estilo dos Grupos de Formulário (Label + Input) ---- */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+/* =============================================== */
+/* NOVA ESTILIZAÇÃO DOS INPUTS                     */
+/* =============================================== */
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fdfdfd;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* Garante que padding não afete a largura total */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Efeito ao focar no input (clicar ou navegar com Tab) */
+.form-group input[type="text"]:focus,
+.form-group input[type="password"]:focus {
+    outline: none; /* Remove a borda padrão do navegador */
+    border-color: #f0c419; /* Usa a cor dourada do tema */
+    box-shadow: 0 0 8px rgba(240, 196, 25, 0.5); /* Sombra suave dourada */
+}
+
+
+/* ---- Estilo para o botão e mensagens de erro ---- */
+
+/* Reutilizando a classe .btn-adicionar que já estava no HTML do form */
+.btn-adicionar {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: #003366;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn-adicionar:hover {
+    background-color: #004488;
+}
+
+#errorMessage {
+    color: #c82333;
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+.btn-voltar {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    color: #555;
+    background-color: transparent;
+    border: 1px solid #ccc; /* Borda cinza clara */
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-voltar:hover {
+    background-color: #f8f9fa; /* Fundo levemente acinzentado */
+    color: #000;
+    border-color: #aaa;
+}

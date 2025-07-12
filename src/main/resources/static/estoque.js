@@ -1,7 +1,30 @@
+// =================================================================
+// INÍCIO DAS MODIFICAÇÕES DE SEGURANÇA
+// =================================================================
+
+const URL_BACKEND = ''; // URL do seu backend
+const token = localStorage.getItem('jwtToken'); // 1. Recupera o token
+
+// 2. Verifica se o token existe, se não, redireciona para o login
+if (!token) {
+    alert('Acesso negado. Por favor, faça o login.');
+    window.location.href = 'login.html';
+}
+
+// =================================================================
+// FIM DAS MODIFICAÇÕES DE SEGURANÇA
+// =================================================================
+
+
 // Função para buscar os produtos do seu backend
 async function buscarProdutos() {
   try {
-    const response = await fetch(URL_BACKEND+'/produtos');
+    // 3. Adiciona o cabeçalho de autorização na requisição
+    const response = await fetch(URL_BACKEND + '/produtos', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
     if (!response.ok) {
       throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
     }
@@ -53,15 +76,26 @@ async function iniciarPaginaEstoque() {
 
         const imgElement = document.getElementById('detalheImagem');
         if (produto.imagemUUID) {
-            imgElement.src = URL_BACKEND+`/produtos/imagem/${produto.imagemUUID}`;
-            imgElement.alt = produto.nome;
-            imgElement.style.display = 'block';
+            // 3. Para carregar a imagem com token, precisamos fazer um fetch e criar uma URL temporária
+            fetch(URL_BACKEND + `/produtos/imagem/${produto.imagemUUID}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(res => res.blob())
+            .then(blob => {
+                imgElement.src = URL.createObjectURL(blob);
+                imgElement.alt = produto.nome;
+                imgElement.style.display = 'block';
+            }).catch(err => {
+                console.error("Erro ao carregar imagem:", err)
+                imgElement.style.display = 'none';
+            });
+
         } else {
             imgElement.src = '';
             imgElement.style.display = 'none';
         }
         document.getElementById('detalheNome').textContent = produto.nome;
-        document.getElementById('detalheEstoque').textContent = produto.estoque; // Será atualizado dinamicamente
+        document.getElementById('detalheEstoque').textContent = produto.estoque;
         document.getElementById('detalhePreco').textContent = produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         painelDetalhes.style.display = 'block';
     }
@@ -69,7 +103,7 @@ async function iniciarPaginaEstoque() {
     // --- 4. Event Listeners ---
 
     seletorCategorias.addEventListener('change', () => {
-        seletorProdutos.innerHTML = '<option value="" disabled selected>Aguardando categoria...</option>';
+        seletorProdutos.innerHTML = '<option value="" disabled selected>Selecione um produto</option>';
         const categoriaSelecionada = seletorCategorias.value;
         if (categoriaSelecionada) {
             const produtosDaCategoria = produtosPorCategoria[categoriaSelecionada] || [];
@@ -91,33 +125,27 @@ async function iniciarPaginaEstoque() {
         atualizarDetalhes();
     });
 
-    // Listener do botão de ação com a lógica da requisição PUT
     btnAcao.addEventListener('click', async () => {
         const produtoId = seletorProdutos.value;
         const quantidade = parseInt(inputValor.value);
         
-        if (!produtoId) {
-            alert("Por favor, selecione um produto.");
-            return;
-        }
-        if (!quantidade || quantidade < 0) {
-            alert("Por favor, informe uma quantidade válida.");
-            return;
-        }
+        if (!produtoId) return alert("Por favor, selecione um produto.");
+        if (!quantidade || quantidade <= 0) return alert("Por favor, informe uma quantidade válida.");
         
-        // Desabilita o botão e mostra feedback
         btnAcao.disabled = true;
         btnAcao.textContent = 'Atualizando...';
 
         try {
-            // 1. Monta a URL e o corpo da requisição
-            const url = URL_BACKEND+`/produtos/${produtoId}/estoque`;
+            const url = URL_BACKEND + `/produtos/${produtoId}/estoque`;
             const corpoRequisicao = { quantidade: quantidade };
 
-            // 2. Executa a requisição PUT
+            // 3. Adiciona o cabeçalho de autorização na requisição PUT
             const response = await fetch(url, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` 
+                },
                 body: JSON.stringify(corpoRequisicao)
             });
 
@@ -126,22 +154,15 @@ async function iniciarPaginaEstoque() {
                 throw new Error(erro.message || "Não foi possível processar a requisição.");
             }
 
-            // 3. Em caso de sucesso, atualiza os dados na tela
             const produtoAtualizado = await response.json();
-            
-            // Atualiza o objeto no nosso mapa de produtos em memória
             produtosPorId[produtoAtualizado.id] = produtoAtualizado;
-            
-            // Atualiza o painel de detalhes com o novo valor de estoque
             atualizarDetalhes();
-
-            alert(`${produtoAtualizado.estoque} unidades de "${produtoAtualizado.nome}" adicionadas ao estoque`);
+            alert(`Estoque de "${produtoAtualizado.nome}" atualizado para ${produtoAtualizado.estoque} unidades.`);
 
         } catch (error) {
             console.error("Erro ao atualizar o estoque:", error);
             alert(`Falha ao atualizar o estoque: ${error.message}`);
         } finally {
-            // 4. Reabilita o botão, independentemente do resultado
             btnAcao.disabled = false;
             btnAcao.textContent = "Adicionar em estoque";
         }
@@ -149,6 +170,7 @@ async function iniciarPaginaEstoque() {
 
 
     // --- 5. Inicialização ---
+    seletorCategorias.innerHTML = '<option value="" disabled selected>Selecionar...</option>';
     const categoriasIniciais = Object.keys(produtosPorCategoria);
     categoriasIniciais.forEach(categoria => {
         const option = document.createElement('option');
@@ -156,8 +178,6 @@ async function iniciarPaginaEstoque() {
         option.textContent = categoria;
         seletorCategorias.appendChild(option);
     });
-    
-    seletorCategorias.dispatchEvent(new Event('change'));
 }
 
 iniciarPaginaEstoque();
