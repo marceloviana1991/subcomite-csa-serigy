@@ -12,282 +12,185 @@ A API utiliza o formato **JSON** para todas as requisições e respostas que env
 
 A API está dividida em dois recursos principais: **Produtos** e **Pedidos**.
 
-----------
+-----
 
 ### **Recurso: Produtos**
 
 Controla todas as operações relacionadas a produtos, como cadastro, listagem, atualização e exclusão.
 
-#### 1. Listar todos os Produtos
+#### 1\. Listar todos os Produtos
 
 Retorna uma lista com todos os produtos cadastrados no sistema.
 
--   **Método:** `GET`
-    
--   **Rota:** `/produtos`
-    
--   **Resposta (200 OK):** `application/json`
-    
-    JSON
-    
-    ```
-    [
-        {
-            "id": 1,
-            "nome": "Cimento Votoran",
-            "preco": 28.50,
-            "estoque": 150,
-            "imagemUUID": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
-        },
-        {
-            "id": 2,
-            "nome": "Tijolo Baiano (Milheiro)",
-            "preco": 850.00,
-            "estoque": 45,
-            "imagemUUID": "f0e9d8c7-b6a5-4321-fedc-ba0987654321"
-        }
-    ]
-    
-    ```
-    
+- **Método:** `GET`
+- **Rota:** `/produtos`
+- **Resposta (200 OK):** `application/json`
+  ```json
+  [
+      {
+          "id": 1,
+          "nome": "Cimento Votoran",
+          "preco": 28.50,
+          "estoque": 150,
+          "imagemUUID": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+      },
+      {
+          "id": 2,
+          "nome": "Tijolo Baiano (Milheiro)",
+          "preco": 850.00,
+          "estoque": 45,
+          "imagemUUID": "f0e9d8c7-b6a5-4321-fedc-ba0987654321"
+      }
+  ]
+  ```
 
-#### 2. Detalhar um Produto
+#### 2\. Detalhar um Produto
 
 Busca e retorna os dados de um produto específico pelo seu `id`.
 
--   **Método:** `GET`
-    
--   **Rota:** `/produtos/{id}`
-    
--   **Parâmetro de Rota:**
-    
-    -   `id` (Long): O ID do produto a ser detalhado.
-        
--   **Resposta (200 OK):** `application/json`
-    
-    JSON
-    
-    ```
-    {
-        "id": 1,
-        "nome": "Cimento Votoran",
-        "preco": 28.50,
-        "estoque": 150,
-        "imagemUUID": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
-    }
-    
-    ```
-    
--   **Resposta de Erro (404 Not Found):** Se o produto com o ID especificado não for encontrado.
-    
+- **Método:** `GET`
+- **Rota:** `/produtos/{id}`
+- **Parâmetro de Rota:**
+    - `id` (Long): O ID do produto a ser detalhado.
+- **Resposta (200 OK):** `application/json`
+  ```json
+  {
+      "id": 1,
+      "nome": "Cimento Votoran",
+      "preco": 28.50,
+      "estoque": 150,
+      "imagemUUID": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+  }
+  ```
+- **Resposta de Erro (404 Not Found):** Se o produto com o ID especificado não for encontrado.
 
-#### 3. Cadastrar um novo Produto
+#### 3\. Cadastrar um novo Produto
 
 Cria um novo produto. Este endpoint espera uma requisição do tipo `multipart/form-data` para enviar os dados do produto (em JSON) e a imagem.
 
--   **Método:** `POST`
-    
--   **Rota:** `/produtos`
-    
--   **Tipo de Requisição:** `multipart/form-data`
-    
--   **Partes da Requisição:**
-    
+- **Método:** `POST`
+- **Rota:** `/produtos`
+- **Tipo de Requisição:** `multipart/form-data`
+- **Partes da Requisição:**
     1.  `produto`: um campo de texto contendo uma string JSON com os detalhes do produto.
-        
     2.  `imagem`: um campo de arquivo contendo a imagem do produto (ex: `image/jpeg`, `image/png`).
-        
--   **Exemplo do conteúdo para a parte `produto`:**
-    
-    JSON
-    
-    ```
-    {
+- **Exemplo do conteúdo para a parte `produto`:**
+  ```json
+  {
+    "nome": "Argamassa ACIII",
+    "preco": 18.75,
+    "estoque": 200
+  }
+  ```
+- **Resposta (201 Created):** `application/json`
+  Retorna o objeto do produto recém-criado, incluindo o id e o imagemUUID gerados pelo sistema.
+  ```json
+  {
+      "id": 3,
       "nome": "Argamassa ACIII",
       "preco": 18.75,
-      "estoque": 200
-    }
-    
-    ```
-    
--   Resposta (201 Created): application/json
-    
-    Retorna o objeto do produto recém-criado, incluindo o id e o imagemUUID gerados pelo sistema.
-    
-    JSON
-    
-    ```
-    {
-        "id": 3,
-        "nome": "Argamassa ACIII",
-        "preco": 18.75,
-        "estoque": 200,
-        "imagemUUID": "11223344-5566-7788-9900-aabbccddeeff"
-    }
-    
-    ```
-    
--   **Exemplo com `curl`:**
-    
-    Bash
-    
-    ```
-    curl -X POST http://localhost:8080/produtos \
-    -F 'produto={"nome": "Argamassa ACIII", "preco": 18.75, "estoque": 200}' \
-    -F 'imagem=@/caminho/para/sua/imagem.jpg'
-    
-    ```
-    
+      "estoque": 200,
+      "imagemUUID": "11223344-5566-7788-9900-aabbccddeeff"
+  }
+  ```
+- **Exemplo com `curl`:**
+  ```bash
+  curl -X POST http://localhost:8080/produtos \
+  -F 'produto={"nome": "Argamassa ACIII", "preco": 18.75, "estoque": 200}' \
+  -F 'imagem=@/caminho/para/sua/imagem.jpg'
+  ```
 
-#### 4. Carregar Imagem de um Produto
+#### 4\. Carregar Imagem de um Produto
 
 Retorna o arquivo de imagem de um produto, identificado pelo seu `UUID`. Ideal para ser usado em tags `<img>` no frontend.
 
--   **Método:** `GET`
-    
--   **Rota:** `/produtos/imagem/{uuid}`
-    
--   **Parâmetro de Rota:**
-    
-    -   `uuid` (UUID): O UUID da imagem associada ao produto.
-        
--   **Resposta (200 OK):** O arquivo de imagem binário.
-    
--   **Cabeçalhos da Resposta:**
-    
-    -   `Content-Type`: `image/jpeg`, `image/png`, etc.
-        
--   **Exemplo de Uso:**
-    
-    HTML
-    
-    ```
-    <img src="http://localhost:8080/produtos/imagem/a1b2c3d4-e5f6-7890-1234-567890abcdef" alt="Cimento Votoran">
-    
-    ```
-    
+- **Método:** `GET`
+- **Rota:** `/produtos/imagem/{uuid}`
+- **Parâmetro de Rota:**
+    - `uuid` (UUID): O UUID da imagem associada ao produto.
+- **Resposta (200 OK):** O arquivo de imagem binário.
+- **Cabeçalhos da Resposta:**
+    - `Content-Type`: `image/jpeg`, `image/png`, etc.
+- **Exemplo de Uso:**
+  ```html
+  <img src="http://localhost:8080/produtos/imagem/a1b2c3d4-e5f6-7890-1234-567890abcdef" alt="Cimento Votoran">
+  ```
 
-#### 5. Adicionar Estoque a um Produto
+#### 5\. Adicionar Estoque a um Produto
 
 Adiciona uma quantidade ao estoque de um produto existente.
 
--   **Método:** `PUT`
-    
--   **Rota:** `/produtos/{id}/estoque`
-    
--   **Parâmetro de Rota:**
-    
-    -   `id` (Long): O ID do produto que terá o estoque atualizado.
-        
--   **Corpo da Requisição (Body):** `application/json`
-    
-    JSON
-    
-    ```
-    {
-      "quantidade": 50
-    }
-    
-    ```
-    
--   Resposta (200 OK): application/json
-    
-    Retorna o objeto completo do produto com o estoque atualizado.
-    
-    JSON
-    
-    ```
-    {
-        "id": 1,
-        "nome": "Cimento Votoran",
-        "preco": 28.50,
-        "estoque": 200,
-        "imagemUUID": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
-    }
-    
-    ```
-    
+- **Método:** `PUT`
+- **Rota:** `/produtos/{id}/estoque`
+- **Parâmetro de Rota:**
+    - `id` (Long): O ID do produto que terá o estoque atualizado.
+- **Corpo da Requisição (Body):** `application/json`
+  ```json
+  {
+    "quantidade": 50
+  }
+  ```
+- **Resposta (200 OK):** `application/json`
+  Retorna o objeto completo do produto com o estoque atualizado.
+  ```json
+  {
+      "id": 1,
+      "nome": "Cimento Votoran",
+      "preco": 28.50,
+      "estoque": 200,
+      "imagemUUID": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+  }
+  ```
 
-#### 6. Excluir um Produto
+#### 6\. Excluir um Produto
 
 Deleta permanentemente um produto do sistema, incluindo sua imagem associada.
 
--   **Método:** `DELETE`
-    
--   **Rota:** `/produtos/{id}`
-    
--   **Parâmetro de Rota:**
-    
-    -   `id` (Long): O ID do produto a ser excluído.
-        
--   **Resposta de Sucesso (204 No Content):**
-    
-    -   Nenhum corpo de resposta é retornado, apenas o status HTTP indica que a operação foi bem-sucedida.
-        
--   **Resposta de Erro (404 Not Found):**
-    
-    -   Se o produto com o ID especificado não for encontrado.
-        
--   **Exemplo com `curl`:**
-    
-    Bash
-    
-    ```
-    curl -X DELETE http://localhost:8080/produtos/3
-    
-    ```
+- **Método:** `DELETE`
+- **Rota:** `/produtos/{id}`
+- **Parâmetro de Rota:**
+    - `id` (Long): O ID do produto a ser excluído.
+- **Resposta de Sucesso (204 No Content):**
+    - Nenhum corpo de resposta é retornado, apenas o status HTTP indica que a operação foi bem-sucedida.
+- **Resposta de Erro (404 Not Found):**
+    - Se o produto com o ID especificado não for encontrado.
+- **Exemplo com `curl`:**
+  ```bash
+  curl -X DELETE http://localhost:8080/produtos/3
+  ```
 
-
-#### 7. Editar um Produto
+#### 7\. Editar um Produto
 
 Edita os atributos de um produto existente.
 
--   **Método:** `PUT`
-
--   **Rota:** `/produtos/{id}`
-
--   **Parâmetro de Rota:**
-
-    -   `id` (Long): O ID do produto que terá os atributos atualizados.
-
--   **Tipo de Requisição:** `multipart/form-data`
-
--   **Partes da Requisição:**
-
+- **Método:** `PUT`
+- **Rota:** `/produtos/{id}`
+- **Parâmetro de Rota:**
+    - `id` (Long): O ID do produto que terá os atributos atualizados.
+- **Tipo de Requisição:** `multipart/form-data`
+- **Partes da Requisição:**
     1.  `produto`: um campo de texto contendo uma string JSON com os detalhes do produto.
-
     2.  `imagem`: um campo de arquivo contendo a imagem do produto (ex: `image/jpeg`, `image/png`).
+  <!-- end list -->
+  ```json
+  {
+      "nome": "Cimento Votoran",
+      "preco": 28.50
+  }
+  ```
+- **Resposta (200 OK):** `application/json`
+  Retorna o objeto completo do produto com o estoque atualizado.
+  ```json
+  {
+      "id": 1,
+      "nome": "Cimento Votoran",
+      "preco": 28.50,
+      "estoque": 200,
+      "imagemUUID": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+  }
+  ```
 
-    JSON
-
-    ```
-    {
-        "nome": "Cimento Votoran",
-        "preco": 28.50,
-    }
-    
-    ```
-
--   Resposta (200 OK): application/json
-
-    Retorna o objeto completo do produto com o estoque atualizado.
-
-    JSON
-
-    ```
-    {
-        "id": 1,
-        "nome": "Cimento Votoran",
-        "preco": 28.50,
-        "estoque": 200,
-        "imagemUUID": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
-    }
-    
-    ```
-
-
-
-----------
+-----
 
 ### **Recurso: Pedidos**
 
@@ -295,7 +198,7 @@ Gerencia a criação e consulta de pedidos de compra.
 
 #### 1\. Cadastrar um novo Pedido
 
-Cria um novo pedido com uma lista de itens. O sistema automaticamente debita a quantidade do estoque dos produtos correspondentes.
+Cria um novo pedido com uma lista de itens. O sistema automaticamente debita a quantidade do estoque dos produtos correspondentes. Por padrão, um novo pedido é criado com `"confirmado": false`.
 
 * **Método:** `POST`
 * **Rota:** `/pedidos`
@@ -320,8 +223,9 @@ Cria um novo pedido com uma lista de itens. O sistema automaticamente debita a q
   ```json
   {
       "id": 1,
-      "dataPedido": "2025-07-05T13:55:00.123456",
+      "dataPedido": "2025-07-12T08:29:26.123456",
       "valorTotal": 330.00,
+      "confirmado": false,
       "itens": [
           {
               "id": 1,
@@ -353,14 +257,16 @@ Retorna uma lista com todos os pedidos já realizados no sistema.
   [
       {
           "id": 1,
-          "dataPedido": "2025-07-05T13:55:00.123456",
+          "dataPedido": "2025-07-11T13:55:00.123456",
           "valorTotal": 330.00,
+          "confirmado": true,
           "itens": [...]
       },
       {
           "id": 2,
-          "dataPedido": "2025-07-05T13:57:10.789123",
+          "dataPedido": "2025-07-12T08:29:10.789123",
           "valorTotal": 850.00,
+          "confirmado": false,
           "itens": [...]
       }
   ]
@@ -380,8 +286,9 @@ Busca e retorna os dados de um pedido específico pelo seu `id`.
   ```json
   {
       "id": 1,
-      "dataPedido": "2025-07-05T13:55:00.123456",
+      "dataPedido": "2025-07-11T13:55:00.123456",
       "valorTotal": 330.00,
+      "confirmado": true,
       "itens": [
           {
               "id": 1,
@@ -399,3 +306,70 @@ Busca e retorna os dados de um pedido específico pelo seu `id`.
   }
   ```
 * **Resposta de Erro (404 Not Found):** Se o pedido com o ID especificado não for encontrado.
+
+-----
+
+#### 4\. Confirmar um Pedido
+
+Marca um pedido como confirmado, alterando o campo `confirmado` para `true`.
+
+* **Método:** `PUT`
+* **Rota:** `/pedidos/confirmar/{id}`
+* **Parâmetro de Rota:**
+    * `id` (Long): O ID do pedido a ser confirmado.
+* **Corpo da Requisição (Body):** Nenhum.
+* **Resposta de Sucesso (200 OK):** `application/json`
+  Retorna o objeto do pedido com o status atualizado.
+  ```json
+  {
+      "id": 2,
+      "dataPedido": "2025-07-12T08:29:10.789123",
+      "valorTotal": 850.00,
+      "confirmado": true,
+      "itens": [...]
+  }
+  ```
+* **Resposta de Erro (404 Not Found):** Se o pedido com o ID especificado não for encontrado.
+
+-----
+
+#### 5\. Cancelar um Pedido
+
+Cancela um pedido, revertendo a operação e repondo os itens ao estoque.
+
+* **Método:** `DELETE`
+* **Rota:** `/pedidos/cancelar/{id}`
+* **Parâmetro de Rota:**
+    * `id` (Long): O ID do pedido a ser cancelado.
+* **Resposta de Sucesso (204 No Content):**
+    * Nenhum corpo de resposta é retornado. O status HTTP indica o sucesso da operação.
+* **Resposta de Erro (404 Not Found):** Se o pedido com o ID especificado não for encontrado ou se já foi confirmado.
+
+-----
+
+#### 6\. Listar Pedidos por Mês e Ano
+
+Retorna uma lista de pedidos filtrada por um mês e ano específicos.
+
+* **Método:** `GET`
+* **Rota:** `/pedidos/filtrar`
+* **Parâmetros de Query:**
+    * `mes` (Integer): O número do mês (ex: 7 para Julho).
+    * `ano` (Integer): O ano (ex: 2025).
+* **Resposta de Sucesso (200 OK):** `application/json`
+  Retorna uma lista de pedidos que correspondem ao filtro.
+  ```json
+  [
+      {
+          "id": 1,
+          "dataPedido": "2025-07-11T13:55:00.123456",
+          "valorTotal": 330.00,
+          "confirmado": true,
+          "itens": [...]
+      }
+  ]
+  ```
+* **Exemplo com `curl`:**
+  ```bash
+  curl -X GET "http://localhost:8080/pedidos/filtrar?mes=7&ano=2025"
+  ```
