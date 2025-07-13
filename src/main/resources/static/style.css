@@ -321,6 +321,7 @@ footer {
     list-style: none;
     display: flex;
     gap: 1.5rem;
+    align-items: center;
 }
 
 .nav-link {
@@ -598,3 +599,110 @@ footer {
     border-radius: 5px;
 }
 
+
+/* =============================================== */
+/* ESTILOS DA PÁGINA DE EDIÇÃO DE PRODUTO          */
+/* =============================================== */
+
+/* O formulário de edição agora é um card dentro da coluna da direita */
+.form-edicao-wrapper {
+    display: flex;
+    gap: 2rem;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    align-items: flex-start;
+    border-top: 5px solid #003366;
+}
+
+.imagem-preview-container {
+    flex-basis: 250px; /* Largura fixa para a imagem */
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.imagem-preview-container label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+#imagemPreview {
+    width: 100%;
+    height: auto;
+    max-height: 250px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+}
+
+.campos-edicao {
+    flex: 1; /* Ocupa o resto do espaço */
+    min-width: 0; /* Previne que o flex item cresça demais */
+}
+
+.campos-edicao h3 {
+    font-family: 'Merriweather', serif;
+    color: #003366;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    word-break: break-word; /* Quebra nomes de produtos muito longos */
+}
+
+/* ESTILOS ADICIONADOS PARA OS INPUTS DE TEXTO E NÚMERO */
+.campos-edicao input[type="text"],
+.campos-edicao input[type="number"] {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.campos-edicao input[type="text"]:focus,
+.campos-edicao input[type="number"]:focus {
+    outline: none;
+    border-color: #f0c419;
+    box-shadow: 0 0 5px rgba(240, 196, 25, 0.5);
+}
+
+
+#inputImagem {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+
+
+.logout-btn:hover {
+    background-color: #a41522;
+}
+
+/* Ajuste para o botão de logout no desktop */
+@media (min-width: 769px) {
+    .logout-btn {
+        width: auto; /* Largura automática no desktop */
+    }
+}
+
+
+/* Responsividade para a tela de edição */
+@media (max-width: 800px) {
+    .form-edicao-wrapper {
+        flex-direction: column;
+    }
+    .imagem-preview-container {
+        flex-basis: auto;
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+}

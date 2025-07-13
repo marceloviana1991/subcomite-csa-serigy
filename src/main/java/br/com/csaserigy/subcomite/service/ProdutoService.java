@@ -69,7 +69,9 @@ public class ProdutoService {
         if (dados.preco() != null && dados.preco() > 0) {
             produto.setPreco(dados.preco());
         }
-
+        if (dados.estoque() != null) {
+            produto.setEstoque(dados.estoque());
+        }
         // Verifica se uma nova imagem foi enviada
         if (imagem != null && !imagem.isEmpty()) {
             // Deleta a imagem antiga

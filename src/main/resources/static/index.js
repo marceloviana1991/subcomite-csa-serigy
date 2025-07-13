@@ -120,42 +120,64 @@ Promise.all([promiseProdutos, promiseContato])
     });
 
     btnAdicionar.addEventListener('click', () => {
-      const categoriaSelecionada = seletorCategorias.value;
-      const produtoEscolhido = dicionarioDeTipos[categoriaSelecionada].find(p => p.nome == seletorProdutos.value);
-      const quantidade = parseInt(inputQuantidade.value, 10);
+        const categoriaSelecionada = seletorCategorias.value;
+        const produtoEscolhido = dicionarioDeTipos[categoriaSelecionada].find(p => p.nome == seletorProdutos.value);
+        const quantidade = parseInt(inputQuantidade.value, 10);
 
-      if (!produtoEscolhido || quantidade < 1) return;
+        if (!produtoEscolhido || quantidade < 1) return;
 
-      let quantidadeJaAdicionada = 0;
-      for (const linha of corpoTabelaPedido.children) {
-        if (linha.children[0].textContent === produtoEscolhido.nome) {
-          quantidadeJaAdicionada += parseInt(linha.children[1].textContent, 10);
+        let quantidadeJaAdicionada = 0;
+        for (const linha of corpoTabelaPedido.children) {
+            if (linha.children[0].textContent === produtoEscolhido.nome) {
+            quantidadeJaAdicionada += parseInt(linha.children[1].textContent, 10);
+            }
         }
-      }
 
-      if ((quantidadeJaAdicionada + quantidade) > produtoEscolhido.estoque) {
-        alert(`Quantidade insuficiente. Estoque disponível: ${produtoEscolhido.estoque}`);
-        return;
-      }
+        if ((quantidadeJaAdicionada + quantidade) > produtoEscolhido.estoque) {
+            alert(`Quantidade insuficiente. Estoque disponível: ${produtoEscolhido.estoque}`);
+            return;
+        }
 
-      const subtotal = produtoEscolhido.preco * quantidade;
-      const novaLinha = document.createElement('tr');
-      novaLinha.setAttribute('data-produto-id', produtoEscolhido.id);
-      novaLinha.innerHTML = `
-        <td>${produtoEscolhido.nome}</td>
-        <td>${quantidade}</td>
-        <td>R$ ${subtotal.toFixed(2)}</td>
-        <td><button class="btn-remover">Remover</button></td>
-      `;
-      novaLinha.querySelector('.btn-remover').addEventListener('click', () => {
-        novaLinha.remove();
+        const subtotal = produtoEscolhido.preco * quantidade;
+        const novaLinha = document.createElement('tr');
+        novaLinha.setAttribute('data-produto-id', produtoEscolhido.id);
+        novaLinha.innerHTML = `
+            <td>${produtoEscolhido.nome}</td>
+            <td>${quantidade}</td>
+            <td>R$ ${subtotal.toFixed(2)}</td>
+            <td><button class="btn-remover">Remover</button></td>
+        `;
+        novaLinha.querySelector('.btn-remover').addEventListener('click', () => {
+            novaLinha.remove();
+            atualizarTotalPedido();
+        });
+        corpoTabelaPedido.appendChild(novaLinha);
         atualizarTotalPedido();
-      });
-      corpoTabelaPedido.appendChild(novaLinha);
-      atualizarTotalPedido();
+
+        // --- INÍCIO DA LÓGICA DE LIMPEZA APÓS ADICIONAR ---
+        // Reseta o formulário de seleção de produto para o estado inicial,
+        // permitindo que um novo produto seja adicionado em seguida.
+
+        // 1. Reseta o seletor de categorias para a opção padrão
+        seletorCategorias.value = "";
+
+        // 2. Limpa e desabilita o seletor de produtos
+        seletorProdutos.innerHTML = '<option value="" disabled selected>Selecione um produto...</option>';
+        seletorProdutos.disabled = true;
+
+        // 3. Esconde o painel de detalhes do produto
+        painelDetalhes.style.display = 'none';
+
+        // 4. Reseta e desabilita o campo de quantidade
+        inputQuantidade.value = 1;
+        inputQuantidade.disabled = true;
+
+        // 5. Desabilita o próprio botão de adicionar
+        btnAdicionar.disabled = true;
+        // --- FIM DA LÓGICA DE LIMPEZA ---
     });
 
-    // Substitua a sua função antiga por esta versão corrigida
+
     btnFinalizarPedido.addEventListener('click', () => {
         if (corpoTabelaPedido.children.length === 0) {
           alert('O pedido está vazio.');

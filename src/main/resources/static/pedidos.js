@@ -2,7 +2,7 @@
 // INÍCIO DA LÓGICA DE SEGURANÇA
 // =================================================================
 
-const URL_BACKEND = 'http://localhost:8081'; // URL do seu backend
+const URL_BACKEND = ''; // URL do seu backend
 const token = localStorage.getItem('jwtToken'); // 1. Recupera o token
 
 // 2. Verifica se o token existe, se não, redireciona para o login
