@@ -248,7 +248,9 @@ Promise.all([promiseProdutos, promiseContato])
             const subtotal = linha.children[2].textContent;
             mensagem += `• ${nome} - ${quantidade} un. - ${subtotal}\n`;
           }
-          mensagem += `\n*Total:* ${totalPedidoElemento.textContent}`;
+          mensagem += `\n*Total:* ${totalPedidoElemento.textContent}\n`;
+
+          mensagem += `\n*Chave Pix do servidor*: ${telefone.slice(2)}`
 
           // A variável 'telefone' aqui se refere ao telefone do administrador para onde a msg será enviada
           const urlWhatsApp = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
